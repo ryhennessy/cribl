@@ -41,6 +41,15 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 Example Playbook
 ----------------
 
+    - hosts: leader 
+      user: myuser
+      become: yes
+      tasks:
+        - import_role:
+            name: cribl
+          vars:
+            cribl_leader: yes
+
     - hosts: workers 
       user: myuser
       become: yes
@@ -51,15 +60,6 @@ Example Playbook
             cribl_workergroup: mygroup
             cribl_worker: yes
             cirbl_leaderhost: leader.mydomain.com
-
-    - hosts: leader 
-      user: myuser
-      become: yes
-      tasks:
-        - import_role:
-            name: cribl
-          vars:
-            cribl_leader: yes
 
     - hosts: install_only 
       user: myuser
