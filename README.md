@@ -17,6 +17,7 @@ Role Variables
 --------------
 
 | Variable | Requried | Description | Default |
+| --- | --- | --- | --- |
 | cribl_path | no | Location in which to untar the 'cribl' directory |  /opt |
 | cribl_user | no | Linux User and Group to run Cribl | cribl |
 | cribl_leaderhost | worker - yes | DNS/IP of the Leader node that the workers will join | leader.cribl.io |
