@@ -31,7 +31,11 @@ Role Variables
 Dependencies
 ------------
 
-None
+If you receive an fork error when running a playbook with this role on MacOS. Export the following variable first and then try running the playbook again.
+
+```
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+```
 
 
 Example Playbook
