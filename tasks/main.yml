@@ -1,0 +1,53 @@
+---
+# tasks file for cribl
+- name: Ensure the server is up to date (yum)
+  ansible.builtin.yum:
+    state: latest
+    name: '*'
+  when:
+    - ansible_os_family == "RedHat"
+- name: Ensure the server is up to date (apt)
+  ansible.builtin.apt:
+    state: latest
+    name: '*'
+  when:
+    - ansible_os_family == "Debian"
+- name: Ensure that the Install Path Exists
+  ansible.builtin.file:
+    path: '{{ cribl_path }}'
+    state: directory
+    mode: '0755'
+- name: Install the lastest version of Cribl (arm64)
+  ansible.builtin.unarchive:
+    src: "{{ lookup('ansible.builtin.url', 'https://cdn.cribl.io/dl/latest-arm64') }}"
+    dest: '{{ cribl_path }}' 
+    remote_src: yes
+    exclude: ['._*']
+  when: ansible_architecture == "aarch64" 
+- name: Install the lastest version of Cribl (x86_64)
+  ansible.builtin.unarchive:
+    src: "{{ lookup('ansible.builtin.url', 'https://cdn.cribl.io/dl/latest-x64') }}"
+    dest: '{{ cribl_path }}' 
+    remote_src: yes
+    exclude: ['._*']
+  when: ansible_architecture == "x86_64"
+- name: Create the User Cribl will Run Under
+  ansible.builtin.user:
+    name: '{{ cribl_user }}'
+    home: /opt/cribl
+- name: Create the node(s) as worker(s) 
+  ansible.builtin.include_tasks: worker.yml
+  when: cribl_worker | bool | default(false)
+- name: Create the node(s) as leader(s) 
+  ansible.builtin.include_tasks: leader.yml
+  when : cribl_leader | bool | default(false)
+- name: Set ownership of the cribl environment to the cribl user
+  ansible.builtin.file:
+    path: '{{cribl_path}}/cribl'
+    owner: '{{ cribl_user }}'
+    group: '{{ cribl_user }}'
+    recurse: yes
+    state: directory
+- name: Validate if the service needs to be started 
+  ansible.builtin.include_tasks: start.yml
+  when: cribl_worker or cribl_leader | bool

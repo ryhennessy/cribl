@@ -1,0 +1,13 @@
+- name: Test to see if the systemd service has already been configured.
+  ansible.builtin.stat:
+    path: /etc/systemd/system/cribl.service
+  register: cribl_systemd
+- name: Install the systemd service
+  ansible.builtin.command:
+    cmd: '/opt/cribl/bin/cribl boot-start enable -u {{ cribl_user }}'
+  when: not cribl_systemd.stat.exists
+- name: Enable the Cribl service on reboot
+  ansible.builtin.service:
+    name: cribl
+    state: restarted
+    enabled: yes

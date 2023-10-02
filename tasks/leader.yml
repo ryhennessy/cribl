@@ -1,0 +1,20 @@
+---
+- name: Stop if Share mount point doesn't exist
+  ansible.builtin.fail:
+    msg: The required shared NFS mount is not currently mounted on the system
+  when: 
+    - cribl_failovervol is defined
+    - ansible_mounts | selectattr('mount', 'equalto', cribl_failovervol) | list | length == 0
+- name: Ensure that git is installed on the leader node
+  ansible.builtin.yum:
+    name: git
+    state: latest
+- name: Set Up Single Node to be a Leader Node.
+  ansible.builtin.command:
+    cmd: /opt/cribl/bin/cribl mode-master
+  when: cribl_failovervol is undefined 
+- name: Set Up HA Leader Nodes.
+  ansible.builtin.command:
+    cmd: '/opt/cribl/bin/cribl mode-master -r failover -v {{ cribl_failovervol}}'
+  when: cribl_failovervol is defined 
+...

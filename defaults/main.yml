@@ -1,0 +1,10 @@
+---
+# defaults file for cribl
+cribl_path: /opt
+cribl_user: cribl
+cribl_leaderhost: leader.cribl.io
+cribl_leaderport: 4200
+cribl_leaderauth: criblmaster
+cribl_workergroup: default 
+cribl_worker: false 
+cribl_leader: false
