@@ -34,7 +34,7 @@
 - name: Create the User Cribl will Run Under
   ansible.builtin.user:
     name: '{{ cribl_user }}'
-    home: /opt/cribl
+    home: '{{ cribl_path }}/cribl'
 - name: Create the node(s) as worker(s) 
   ansible.builtin.include_tasks: worker.yml
   when: cribl_worker | bool | default(false)
