@@ -2,5 +2,5 @@
 # tasks file for cribl worker
 - name: Configure the the node as a Cribl Worker.
   ansible.builtin.command:
-    cmd: '/opt/cribl/bin/cribl mode-worker -H {{cribl_leaderhost}} -p {{cribl_leaderport}} -u {{cribl_leaderauth}} -g {{cribl_workergroup}}'
+    cmd: '/opt/cribl/bin/cribl mode-worker -H {{cribl_leaderhost}} -p {{cribl_leaderport}} -u {{cribl_leaderauth}} -g {{cribl_workergroup}} -S {{cribl_tls | lower }}'
 ...

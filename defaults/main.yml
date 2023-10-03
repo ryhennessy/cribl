@@ -8,3 +8,4 @@ cribl_leaderauth: criblmaster
 cribl_workergroup: default 
 cribl_worker: false 
 cribl_leader: false
+cribl_tls: false
