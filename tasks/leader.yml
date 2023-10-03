@@ -1,14 +1,43 @@
 ---
-- name: Stop if Share mount point doesn't exist
+- name: Stop if Share mount point doesn't exist (HA only)
   ansible.builtin.fail:
     msg: The required shared NFS mount is not currently mounted on the system
   when: 
     - cribl_failovervol is defined
-    - ansible_mounts | selectattr('mount', 'equalto', cribl_failovervol) | list | length == 0
+    - ansible_mounts | selectattr('mount', 'equalto', cribl_failovervol) | selectattr('fstype', 'equalto', 'nfs4') | list | length == 0
+- name: Stop if Cribl license is not provided (HA only)
+  ansible.builtin.fail:
+    msg: The required license key was not provided
+  when:
+    - cribl_failovervol is defined
+    - cribl_license is undefined
 - name: Ensure that git is installed on the leader node
   ansible.builtin.yum:
     name: git
     state: latest
+- name: Verify the permissions are correct for the shared volume (HA only)
+  ansible.builtin.file:
+    path: "{{ cribl_failovervol }}/"
+    owner: "{{ cribl_user }}"
+    group: "{{ cribl_user }}"
+    mode: 0755
+  when: cribl_failovervol is defined
+- name: Create folder for the licenses file
+  ansible.builtin.file:
+    path: "{{ cribl_failovervol }}/local/cribl/"
+    state: directory
+    recurse: yes
+    owner: "{{ cribl_user }}"
+    group: "{{ cribl_user }}"
+    mode: 0755
+- name: Add license to the configuration (HA only)
+  ansible.builtin.template:
+    src: templates/licenses.yml.j2
+    dest: "{{ cribl_failovervol }}/local/cribl/licenses.yml"
+    owner: "{{ cribl_user }}"
+    group: "{{ cribl_user }}"
+    mode: 0644
+  when: cribl_failovervol is defined
 - name: Set Up Single Node to be a Leader Node.
   ansible.builtin.command:
     cmd: /opt/cribl/bin/cribl mode-master

@@ -26,7 +26,8 @@ Role Variables
 | cribl_workergroup | no | Worker Group to join the worker nodes to | default |
 | cribl_worker | no | Set to a true value in order to configure the node(s) as Cribl Worker node(s) | false | 
 | cribl_leader | no | Set to a true value in order to configure the node(s) as a Cribl Leader node(s) | false |
-| cribl_failovervol | no | Set to the path of the failover volume. This value is only required if setting up a Leader Node HA Pair | none |
+| cribl_failovervol | yes - For HA Config | Set to the path of the failover volume. This value is only required if setting up a Leader Node HA Pair | none |
+| cribl_license | yes - For HA Config | Cribl Enterprise license key, required for HA Configuraiton | none |
 
 Dependencies
 ------------
