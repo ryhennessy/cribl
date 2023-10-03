@@ -21,7 +21,7 @@ Role Variables
 | cribl_path | no | Location in which to untar the 'cribl' directory |  /opt |
 | cribl_user | no | Linux User and Group to run Cribl | cribl |
 | cribl_leaderhost | worker - yes | DNS/IP of the Leader node that the workers will join | leader.cribl.io |
-| cribl_tls | no | Boolean value for turing on/off TLS communcation between worker and leader ndoe | false |
+| cribl_tls | no | Boolean value for turning on/off TLS communcation between worker and leader ndoe | false |
 | cribl_leaderport | no | Port for Leader/Worker communications | 4200 |
 | cribl_leaderauth | no | Auth Token for Workers to join Leader. Default value is the out of the box value | criblmaster |
 | cribl_workergroup | no | Worker Group to join the worker nodes to | default |
