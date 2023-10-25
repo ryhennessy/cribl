@@ -30,6 +30,7 @@
     owner: "{{ cribl_user }}"
     group: "{{ cribl_user }}"
     mode: 0755
+  when: cribl_failovervol is defined
 - name: Add license to the configuration (HA only)
   ansible.builtin.template:
     src: templates/licenses.yml.j2

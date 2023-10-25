@@ -61,7 +61,7 @@ Example Playbook
           vars:
             cribl_workergroup: mygroup
             cribl_worker: yes
-            cirbl_leaderhost: leader.mydomain.com
+            cribl_leaderhost: leader.mydomain.com
 
     - hosts: install_only 
       user: myuser
